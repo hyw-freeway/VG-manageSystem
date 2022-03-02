@@ -1,0 +1,169 @@
+<template>
+  <div class="currentW">
+    <el-container
+      style="
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+      "
+    >
+      <!-- <el-header class="tit" height="40px">{{ username }}的周报</el-header> -->
+      <el-main class="mains">
+        <el-collapse accordion class="card">
+          <el-collapse-item
+            v-for="(item, index) in list"
+            :key="index"
+            :name="index"
+          >
+            <template slot="title" class="tit">
+              <div class="title">{{ item.title }}</div>
+              <div class="time text-item">{{ item.publishDate }}</div>
+              <div class="check1">
+                <el-link icon="el-icon-view">查看 </el-link>
+              </div>
+              <div v-if="hasadmin()" class="edit1" @click="edit(item.id, uid)">
+                <el-link icon="el-icon-edit">编辑</el-link>
+              </div>
+              <div v-if="hasadmin()" class="del1" @click="del(item.id)">
+                <el-link icon="el-icon-delete">删除</el-link>
+              </div>
+            </template>
+            <mavon-editor
+              v-model="item.content"
+              :subfield="false"
+              :box-shadow="false"
+              default-open="preview"
+              :toolbars-flag="false"
+            />
+          </el-collapse-item>
+        </el-collapse>
+      </el-main>
+    </el-container>
+  </div>
+</template>
+
+<script>
+import { fetchArticle, delArticle } from "@/api/article";
+
+export default {
+  name: "ArticleList",
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: "success",
+        draft: "info",
+        deleted: "danger",
+      };
+      return statusMap[status];
+    },
+  },
+  data() {
+    return {
+      list: null,
+      roles: [],
+      uid: 1,
+      username: null,
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 20,
+      },
+    };
+  },
+  created() {
+    this.getUsername();
+    this.uid = this.getUid();
+    if (this.uid == null) {
+      this.list = [];
+    } else {
+      this.getList();
+    }
+  },
+  methods: {
+    hasadmin() {
+      (this.roles = localStorage.getItem("roles")),
+        console.log(this.roles.indexOf("admin"));
+      if (this.roles.indexOf("admin") !== -1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    getUsername() {
+      this.username = localStorage.getItem("username");
+    },
+    getUid() {
+      var uid = this.$route.query.Uid;
+      return uid;
+    },
+    getList() {
+      this.listLoading = true;
+      fetchArticle(this.uid).then((response) => {
+        this.list = response;
+        console.log(this.list);
+        this.listLoading = false;
+      });
+    },
+    edit(aid, uid) {
+      console.log(aid);
+      this.$router.push({
+        path: "/example/edit",
+        query: { Aid: aid, Uid: uid },
+      });
+    },
+    del(aid) {
+      console.log(aid);
+      delArticle(aid).then((res) => {
+        console.log(res);
+        //  location.reload()
+        this.$router.push({ path: "/example/userlist" });
+      });
+    },
+  },
+};
+</script>
+
+<style scoped>
+.currentW {
+  margin: 0 10px auto 10px;
+}
+.time {
+  font-size: 12px;
+  top: 64px;
+  left: 30px;
+}
+.tit .el-collapse-item__header {
+  font-size: 30px;
+  padding-left: 30px;
+  height: 70px;
+}
+.title {
+  font-size: 28px;
+  margin-top: -37px;
+}
+.mains {
+  margin-top: 0px;
+  padding-top: 10px;
+}
+.card {
+  margin-top: 0px;
+}
+
+.el-button {
+  border: 0px !important;
+  padding-top: 20px !important ;
+}
+.el-collapse-item {
+  position: relative;
+}
+.check1 {
+  position: absolute;
+  left: 250px;
+}
+.edit1 {
+  position: absolute;
+  left: 305px !important;
+}
+.del1 {
+  position: absolute;
+  left: 360px;
+}
+</style>
