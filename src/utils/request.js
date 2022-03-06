@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
- // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  //baseURL: "http://192.168.196.22:8082", // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 500000 // request timeout
 })
@@ -16,6 +16,7 @@ service.interceptors.request.use(
     // do something before request is sent
     const token = localStorage.getItem('token')
     if (token) {
+      console.log(token)
       config.headers.common['Authorization'] = token
     }
     return config

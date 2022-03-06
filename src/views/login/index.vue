@@ -81,6 +81,7 @@
 <script>
 import { validUsername } from "@/utils/validate";
 import { login, getSession } from '@/api/user'
+import { Message } from 'element-ui';
 export default {
   name: "Login",
   data() {
@@ -165,12 +166,19 @@ export default {
           localStorage.setItem('username', res.username)
            localStorage.setItem('email', res.email)
           localStorage.setItem('uid', res.id)
+          if(res.avatarName===null){
+         localStorage.setItem('imageUrl', "2022-03-06ca922e80a760458a9ee35552581c45c9.png")
+          }else{
           localStorage.setItem('imageUrl', res.avatarName)
+          }
           localStorage.setItem('roles', JSON.stringify(res.roles))
-          if (res.data == 'Bad credentials') {
+          if (res.data === 'Bad credentials') {
             Message('账号或密码错误，请重试')
           } else {
             getSession().then((res) => {
+              if(res==="尚未登录，请先登录"){
+                Message("无token")
+              }else{
               localStorage.setItem('token', res)
               // console.log(res);
               if (res) {
@@ -180,7 +188,7 @@ export default {
                 //   query: this.otherQuery
                 // })
                 console.log('tiaozhuan')
-              }
+              }}
             })
           }
         })

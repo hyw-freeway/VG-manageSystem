@@ -52,9 +52,11 @@ export default {
   },
   created() {
      this.imageUrl=localStorage.getItem("imageUrl");
-  if(this.imageUrl==null){
-    this.imageUrl=false
-  }
+     if(this.imageUrl===null){
+       this.imageUrl="2022-03-06ca922e80a760458a9ee35552581c45c9.png"
+     }
+     console.log(this.imageUrl)
+  
   },
   computed: {
     ...mapGetters([

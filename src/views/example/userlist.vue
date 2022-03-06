@@ -72,6 +72,9 @@ export default {
   },
   created() {
     this.imageUrl=localStorage.getItem("imageUrl")
+    if(this.imageUrl===null){
+      this.imageUrl="2022-03-06ca922e80a760458a9ee35552581c45c9.png"
+    }
 this.img='/api/article/image/'+this.imageUrl
     getUsers().then((r) => {
       this.listOfPerson = r

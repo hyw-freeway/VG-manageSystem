@@ -52,6 +52,9 @@ export default {
   },
   created() {
     this.imageUrl=localStorage.getItem("imageUrl");
+     if(this.imageUrl===null){
+     this.image="2022-03-06ca922e80a760458a9ee35552581c45c9.png"
+   }
     this.uid = localStorage.getItem("uid");
     this.username = localStorage.getItem("username");
     this.getArticle();

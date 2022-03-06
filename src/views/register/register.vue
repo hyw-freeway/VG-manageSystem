@@ -271,7 +271,7 @@ export default {
         console.log(this.loginForm)
         register(this.loginForm).then((res) => {
           console.log(res)
-          if (res.status == 'success') {
+          if (res.id) {
               Message("注册成功，请重新登录")
             this.$router.push('Login')
           } 
