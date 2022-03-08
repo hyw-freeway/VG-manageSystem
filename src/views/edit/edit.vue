@@ -1,6 +1,8 @@
 <template>
   <el-container
-    style=" box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); "
+    style="
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+    "
   >
     <!-- <div class="switch__circle"></div>
     <div class="switch__circle switch__circle--t"></div> -->
@@ -12,7 +14,14 @@
         label-width="60px"
       >
         <el-form-item label="标 题" prop="title">
-          <el-input v-model="markdownForm.title" placeholder="请输入第几周周报" style=" box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04); " />
+          <el-input
+            v-model="markdownForm.title"
+            placeholder="请输入第几周周报"
+            style="
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12),
+                0 0 6px rgba(0, 0, 0, 0.04);
+            "
+          />
         </el-form-item>
       </el-form>
       <mavon-editor
@@ -25,18 +34,17 @@
         @imgAdd="imgAdd"
         @imgDel="imgDel"
       />
-      <br>
-      <el-row>
-        <el-col :span="2">
-          <el-button @click="goback">返 回</el-button>
-        </el-col>
-        <el-col :span="2" :offset="20">
-          <el-button
-            type="primary"
-            style="float: right;background-color: #4B70E2"
-            @click="save"
-          >保 存</el-button>
-        </el-col>
+      <br />
+      <el-row style="float: right">
+        <el-button @click="goback">返 回</el-button>
+
+        <el-button style="width: 140px" @click="savecg">保存至草稿箱</el-button>
+        <el-button
+          type="primary"
+          style="float: right; background-color: #4b70e2"
+          @click="save"
+          >发表文章</el-button
+        >
       </el-row>
     </div>
   </el-container>
@@ -47,21 +55,22 @@ import {
   getMarkdownArticleByAid,
   createMarkdownArticle,
   saveMarkdownArticle,
-  uploadImg
+  uploadImg,
   // getImg
-} from '@/api/article'
-import axios from 'axios'
-import { Message } from 'element-ui'
+} from "@/api/article";
+import { getDate } from "@/utils/date";
+import axios from "axios";
+import { Message } from "element-ui";
 
 export default {
   data() {
     return {
       markdown: {
-        codeStyle: 'atom-one-dark',
+        codeStyle: "atom-one-dark",
         markdownOption: {
           bold: true, // 粗体
 
-          defineOpen: 'preview'
+          defineOpen: "preview",
           // 更多配置
         },
         toolbars: {
@@ -97,100 +106,122 @@ export default {
           alignright: true, // 右对齐
           /* 2.2.1 */
           // subfield:false,
-          preview: true // 预览
-        }
+          preview: true, // 预览
+        },
       },
+      info: {},
+      list: [],
+      article: {},
       markdownForm: {
         id: null,
-        title: '',
-        content: '',
-        uid: 1
-
-        // publishDate:"",
-        // uid:""
-        // contentHtml:null,
-        // type:0
+        title: "",
+        content: "",
+        uid: 1,
       },
 
       rules: {
         title: [
-          { required: true, message: '请输入标题', trigger: 'blur' },
-          { min: 1, max: 80, message: '长度在1到80个字符', trigger: 'blur' }
-        ]
+          { required: true, message: "请输入标题", trigger: "blur" },
+          { min: 1, max: 80, message: "长度在1到80个字符", trigger: "blur" },
+        ],
       },
       lastSaveTime: null,
-      timer: null
-    }
+      timer: null,
+    };
   },
   created() {
-    this.getArticle()
+    this.getArticle();
+    this.list = JSON.parse(localStorage.getItem("cglist"))
+      ? JSON.parse(localStorage.getItem("cglist"))
+      : [];
   },
   mounted() {
-    this.timer = setInterval(this.intervalSave, 2 * 60 * 1000)
+    this.timer = setInterval(this.intervalSave, 2 * 60 * 1000);
   },
   beforeDestroy() {
-    clearInterval(this.timer)
+    clearInterval(this.timer);
   },
   methods: {
     getAid() {
-      var aid = this.$route.query.Aid
-      return aid
+      var aid = this.$route.query.Aid;
+      return aid;
     },
     getArticle() {
       // 获取文章内容
-      const aid = this.$route.query.Aid
-      const uid = this.$route.query.Uid
-      if (aid == null) {
-        this.markdownForm.content = ''
+      const aid = this.$route.query.Aid;
+      const uid = this.$route.query.Uid;
+      this.info = this.$route.query.Info;
+      console.log(this.info);
+      if (this.info == null) {
+        if (aid == null) {
+          this.markdownForm.content = "";
+        } else {
+          getMarkdownArticleByAid(aid)
+            .then((r) => {
+              this.markdownForm.content = r.content == null ? "" : r.content;
+              this.markdownForm.id = r.id;
+              this.markdownForm.title = r.title;
+              this.markdownForm.uid = this.uid;
+              // this.markdownForm.type=r.data.type
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
       } else {
-        getMarkdownArticleByAid(aid)
-          .then((r) => {
-            this.markdownForm.content =
-              r.content == null ? '' : r.content
-            this.markdownForm.id = r.id
-            this.markdownForm.title = r.title
-            this.markdownForm.uid = this.uid
-            // this.markdownForm.type=r.data.type
-          })
-          .catch((e) => {
-            console.log(e)
-          })
+        this.markdownForm.content =
+          this.info.content == null ? "" : this.info.content;
+        this.markdownForm.id = this.info.id;
+        this.markdownForm.title = this.info.title;
+        this.markdownForm.uid = this.info.uid;
       }
     },
     save() {
       // 保存文章内容
-      if (this.markdownForm.title == '') {
-        Message('请填写标题')
+      if (this.markdownForm.title == "") {
+        Message("请填写标题");
       } else {
-        console.log('保存文章，上传服务器')
-        this.markdownForm.uid = localStorage.getItem('uid')
-        console.log(this.markdownForm)
-        if(this.markdownForm.id==null){
-        createMarkdownArticle(this.markdownForm)
-          .then((r) => {
-            this.$message.success('创建成功')
-            // this.markdownForm.id=r.data.id
-            this.lastSaveTime = new Date()
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-          }else{
-            saveMarkdownArticle(this.markdownForm)
-             .then((r) => {
-            this.$message.success('保存成功')
-            // this.markdownForm.id=r.data.id
-            this.lastSaveTime = new Date()
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-          }
+        console.log("保存文章，上传服务器");
+        this.markdownForm.uid = localStorage.getItem("uid");
+        console.log(this.markdownForm);
+        if (this.markdownForm.id == null) {
+          createMarkdownArticle(this.markdownForm)
+            .then((r) => {
+              this.$message.success("创建成功");
+              if (this.info) {
+                let oldlist = JSON.parse(localStorage.getItem("cglist"));
+                let l = this.info;
+                let newlist = this.delete(oldlist, l);
+                localStorage.setItem("cglist", JSON.stringify(newlist));
+              }
+              // this.markdownForm.id=r.data.id
+              this.lastSaveTime = new Date();
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        } else {
+          saveMarkdownArticle(this.markdownForm)
+            .then((r) => {
+              this.$message.success("保存成功");
+              if (this.info) {
+                let oldlist = JSON.parse(localStorage.getItem("cglist"));
+                let l = this.info;
+                let newlist = this.delete(oldlist, l);
+                localStorage.setItem("cglist", JSON.stringify(newlist));
+              }
+              // this.markdownForm.id=r.data.id
+              this.lastSaveTime = new Date();
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
       }
     },
     intervalSave() {
       // 自动保存
-      console.log('时间到了，自动保存')
+      console.log("时间到了，自动保存");
       /* let now = new Date()
       if(now-this.lastSaveTime>=2*60*1000){
         saveMarkdownArticle(this.markdownForm).then(r => {
@@ -203,26 +234,70 @@ export default {
     },
     imgAdd(pos, $file) {
       // 添加图片，pos为位置
-      const $vm = this.$refs.md
-      const base64Data = $file.miniurl // 获取图片base64内容
-      uploadImg(base64Data).then(r => {
-        console.log(r)
-        this.$refs.md.$img2Url(pos, '/api/article/image/' + r.msg)
-      }).catch(e => {
-        console.log(e)
-      })
+      const $vm = this.$refs.md;
+      const base64Data = $file.miniurl; // 获取图片base64内容
+      uploadImg(base64Data)
+        .then((r) => {
+          console.log(r);
+          this.$refs.md.$img2Url(pos, "/api/article/image/" + r.msg);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     imgDel(pos, url) {
       // 删除图片，并不是修改就会触发，仅支持工具栏操作
-      console.log(pos)
-      console.log(url)
+      console.log(pos);
+      console.log(url);
     },
     goback() {
-      this.$router.push('/example/userlist')
-    }
+      this.$router.push("/example/userlist");
+    },
+    delete(_arr, info) {
+      var length = _arr.length;
+      for (var i = 0; i < length; i++) {
+        console.log(i);
+        if (_arr[i].id == info.id) {
+          if (i == 0) {
+            _arr.shift(); //删除并返回数组的第一个元素
+            console.log(_arr);
+            return _arr;
+          } else if (i == length - 1) {
+            console.log("222");
+            _arr.pop(); //删除并返回数组的最后一个元素
+            console.log(_arr);
+            return _arr;
+          } else {
+            _arr.splice(i, 1); //删除下标为i的元素
+            console.log(_arr);
+            return _arr;
+          }
+        } else {
+          console.log("333333");
+        }
+      }
+    },
+    savecg() {
+      let oldlist = JSON.parse(localStorage.getItem("cglist"))
+        ? JSON.parse(localStorage.getItem("cglist"))
+        : [];
+      let l = this.info;
+      let newlist = this.delete(oldlist, l) ? this.delete(oldlist, l) : [];
+      console.log(newlist);
+      this.article["username"] = localStorage.getItem("username");
+      this.article["time"] = getDate();
+      this.article["uid"] = localStorage.getItem("uid");
+      this.article["title"] = this.markdownForm.title;
+      this.article["id"] = this.markdownForm.id;
+      this.article["content"] = this.markdownForm.content;
 
-  }
-}
+      newlist.push(this.article);
+
+      localStorage.setItem("cglist", JSON.stringify(newlist));
+      this.$router.push({ path: "/example/cglist" });
+    },
+  },
+};
 </script>
 <style>
 .bjq {
@@ -230,9 +305,9 @@ export default {
   width: auto;
 }
 .app-container {
-  padding-top:20px;
+  padding-top: 20px;
   padding-bottom: 8px;
-  margin:auto;
+  margin: auto;
   width: 90%;
 }
 /* .el-container {
@@ -240,13 +315,12 @@ export default {
   margin-bottom: 10px;
 } */
 
-.el-button{
-   width: 100px;
+.el-button {
+  width: 100px;
   height: 50px;
   border-radius: 25px !important;
   box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #f9f9f9 !important;
   font-weight: 700 !important;
   font-size: 14px !important;
 }
-
 </style>

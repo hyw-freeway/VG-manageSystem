@@ -47,7 +47,7 @@ export function uploadImg(data) {
 }
 export function delArticle(id) {
   return request({
-    url: '/api/admin/article/delete',
+    url: '/api/article/delete',
     method: 'delete',
     params: { id }
   })

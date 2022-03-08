@@ -69,7 +69,8 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-       localStorage.clear()
+      //  localStorage.clear()
+      localStorage.removeItem("token");
      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
        this.$router.push(`login`)
        location.reload();

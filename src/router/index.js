@@ -85,6 +85,13 @@ export const constantRoutes = [
         hidden: true
       },
       {
+        path: 'cglist',
+        component: () => import('@/views/example/cglist'),
+        //  name: 'ArticleList',
+        meta: { title: '草稿箱', icon: 'list' },
+        
+      },
+      {
         path: 'create',
         component: () => import('@/views/edit/edit'),
         //  name: 'CreateArticle',
