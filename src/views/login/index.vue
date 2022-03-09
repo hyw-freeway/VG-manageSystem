@@ -163,38 +163,26 @@ export default {
         console.log(this.loginForm.password)
         login(this.loginForm.password, this.loginForm.username).then((res) => {
           console.log(res)
-          localStorage.setItem('username', res.username)
-           localStorage.setItem('email', res.email)
-          localStorage.setItem('uid', res.id)
-          if(res.avatarName===null){
+          localStorage.setItem("token",res.sessionId)
+          localStorage.setItem('username', res.userInfo.username)
+           localStorage.setItem('email', res.userInfo.email)
+          localStorage.setItem('uid', res.userInfo.id)
+          if(res.userInfo.avatarName===null){
          localStorage.setItem('imageUrl', "2022-03-06ca922e80a760458a9ee35552581c45c9.png")
           }else{
-          localStorage.setItem('imageUrl', res.avatarName)
+          localStorage.setItem('imageUrl', res.userInfo.avatarName)
           }
-          localStorage.setItem('roles', JSON.stringify(res.roles))
-          if (res.data === 'Bad credentials') {
+          localStorage.setItem('roles', JSON.stringify(res.userInfo.roles))
+           this.$router.push({ path: this.redirect || "/" });
+          if (res == 'Bad credentials') {
             Message('账号或密码错误，请重试')
-          } else {
-            getSession().then((res) => {
-              if(res==="尚未登录，请先登录"){
-                Message("无token")
-              }else{
-              localStorage.setItem('token', res)
-              // console.log(res);
-              if (res) {
-                //this.$router.push({ path: '/dashboard' })
-                this.$router.push({ path: this.redirect || "/" });
-                //   path: this.redirect || '/',
-                //   query: this.otherQuery
-                // })
-                console.log('tiaozhuan')
-              }}
+          } 
             })
           }
-        })
+        
       }
     
-  },
+  ,
    setUserInfo() {
         
         // 判断用户是否勾选记住密码，如果勾选，向cookie中储存登录信息，
