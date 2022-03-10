@@ -1,5 +1,8 @@
 <template>
-  <div class="currentW">
+  <div class="currentW"
+   v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
     <el-container
       style="
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
@@ -38,6 +41,8 @@
               :boxShadow="false"
               defaultOpen="preview"
               :toolbarsFlag="false"
+              :externalLink="externalLink"
+                 :codeStyle="codeStyle"
             />
           </el-collapse-item>
         </el-collapse>
@@ -54,9 +59,36 @@ export default {
    name: "Dashboard",
   data() {
     return {
+      loading:true,
+      codeStyle:"",
       msg: "Welcome to Your Vue.js App",
       postListPerWeek: [],
-    };
+       externalLink: {
+            markdown_css: function() {
+                // 这是你的markdown css文件路径
+                return '/mavon-editor/markdown/github-markdown.min.css';
+            },
+            hljs_js: function() {
+                // 这是你的hljs文件路径
+                return '/mavon-editor/highlightjs/highlight.min.js';
+            },
+            hljs_css: function(css) {
+                // 这是你的代码高亮配色文件路径
+                return '/mavon-editor/highlightjs/styles/' + css + '.min.css';
+            },
+            hljs_lang: function(lang) {
+                // 这是你的代码高亮语言解析路径
+                return '/mavon-editor/highlightjs/languages/' + lang + '.min.js';
+            },
+            katex_css: function() {
+                // 这是你的katex配色方案路径路径
+                return '/mavon-editor/katex/katex.min.css';
+            },
+            katex_js: function() {
+                // 这是你的katex.js路径
+                return '/mavon-editor/katex/katex.min.js';
+            }
+    }}
   },
   methods: {
      hasadmin() {
@@ -79,8 +111,13 @@ export default {
     getPostsByWeek(time).then((r) => {
       console.log(r)
       this.postListPerWeek = r;
+      this.loading=false
     });
   },
+  mounted(){
+    let that = this;
+        that.codeStyle = "atom-one-dark";
+  }
 };
 </script>
 

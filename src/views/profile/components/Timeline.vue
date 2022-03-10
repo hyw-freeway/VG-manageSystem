@@ -1,5 +1,8 @@
 <template>
-  <div class="block">
+  <div class="block"
+   v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
     <el-timeline>
       <el-timeline-item v-for="(item,index) of list" :key="index" :timestamp="item.publishDate" placement="top" >
         <el-card :key="index" @click.native="show(index,item)">
@@ -26,28 +29,7 @@ export default {
       isShow:false,
       uid:1,
       list:[],
-      timeline: [
-        {
-          timestamp: '2019-4-20',
-          title: 'Update Github template',
-          content: 'PanJiaChen committed 2019/4/20 20:46'
-        },
-        {
-          timestamp: '2019/4/21',
-          title: 'Update Github template',
-          content: 'PanJiaChen committed 2019/4/21 20:46'
-        },
-        {
-          timestamp: '2019/4/22',
-          title: 'Build Template',
-          content: 'PanJiaChen committed 2019/4/22 20:46'
-        },
-        {
-          timestamp: '2019/4/23',
-          title: 'Release New Version',
-          content: 'PanJiaChen committed 2019/4/23 20:46'
-        }
-      ]
+     loading:true
     }
   },
   created() {
@@ -64,11 +46,11 @@ export default {
    
     },
     getArticle(){
-      this.listLoading = true
+      this.loading = true
       fetchArticle(this.uid).then(response => {
         this.list = response
          console.log(this.list)
-        this.listLoading = false
+        this.loading = false
       })
     }
   },

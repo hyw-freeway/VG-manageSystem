@@ -1,5 +1,8 @@
 <template>
-  <div class="app-container">
+  <div class="app-container"
+   v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
 
     <el-table :data="listOfPerson" style="width: 100%; margin-top: 30px" border>
       <el-table-column type="index" align="center" label="编号" width="220">
@@ -69,37 +72,7 @@
       </span>
     </el-dialog>
 
-    <!-- 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Role':'New Role'">
-      <el-form :model="role" label-width="80px" label-position="left">
-        <el-form-item label="Name">
-          <el-input v-model="role.name" placeholder="Role Name" />
-        </el-form-item>
-        <el-form-item label="Desc">
-          <el-input
-            v-model="role.description"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            type="textarea"
-            placeholder="Role Description"
-          />
-        </el-form-item>
-        <el-form-item label="Menus">
-          <el-tree
-            ref="tree"
-            :check-strictly="checkStrictly"
-            :data="routesData"
-            :props="defaultProps"
-            show-checkbox
-            node-key="path"
-            class="permission-tree"
-          />
-        </el-form-item>
-      </el-form>
-      <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">Cancel</el-button>
-        <el-button type="primary" @click="confirmRole">Confirm</el-button>
-      </div>
-    </el-dialog> -->
+   
   </div>
 </template>
 
@@ -120,6 +93,7 @@ const defaultRole = {
 export default {
   data() {
     return {
+      loading:true,
       listOfPerson: [],
       selectedRoleId: [],
       setRoleDialogVisible: false,
@@ -140,7 +114,7 @@ export default {
   created() {
     getUsers().then((r) => {
       this.listOfPerson = r;
-      
+      this.loading=false
     });
   },
   methods: {

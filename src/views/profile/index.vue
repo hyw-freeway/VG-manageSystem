@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div class="app-container"
+   >
     <div v-if="user">
       <el-row :gutter="20">
 
@@ -40,6 +41,7 @@ export default {
   components: { UserCard, Activity, Timeline, Account },
   data() {
     return {
+      
       user: {},
       activeTab: 'activity',
       id:null

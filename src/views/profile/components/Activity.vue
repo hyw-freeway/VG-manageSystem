@@ -1,5 +1,8 @@
 <template>
-  <div class="user-activity">
+  <div class="user-activity"
+   v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
     <div class="post" v-for="(item, index) of list" :key="index">
       <div class="user-block">
         <img
@@ -44,6 +47,7 @@ import { fetchArticle } from "@/api/article";
 export default {
   data() {
     return {
+      loading:true,
       uid: 1,
       list: [],
       username: "",
@@ -61,11 +65,11 @@ export default {
   },
   methods: {
     getArticle() {
-      this.listLoading = true;
+      this.loading = true;
       fetchArticle(this.uid).then((response) => {
         this.list = response;
         console.log(this.list);
-        this.listLoading = false;
+        this.loading = false;
       });
     },
   },

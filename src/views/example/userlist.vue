@@ -1,6 +1,9 @@
 <!--  -->
 <template>
-  <div class="currentW">
+  <div class="currentW"
+   v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
     <el-row :gutter="40" class="el-row" type="flex">
       <el-col
         v-for="(item, index) in listOfPerson"
@@ -64,6 +67,7 @@ export default {
   name: 'UserList',
   data() {
     return {
+      loading:true,
       listOfPerson: [],
       person: '',
       imageUrl:null,
@@ -79,6 +83,7 @@ this.img='/api/article/image/'+this.imageUrl
     getUsers().then((r) => {
       this.listOfPerson = r
       console.log(this.listOfPerson)
+      this.loading=false
     })
   },
   methods: {

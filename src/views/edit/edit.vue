@@ -16,7 +16,7 @@
         <el-form-item label="标 题" prop="title">
           <el-input
             v-model="markdownForm.title"
-            placeholder="请输入第几周周报"
+            placeholder="请输入XXX的周报"
             style="
               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12),
                 0 0 6px rgba(0, 0, 0, 0.04);
@@ -33,6 +33,7 @@
         @save="save"
         @imgAdd="imgAdd"
         @imgDel="imgDel"
+      :externalLink="externalLink"
       />
       <br />
       <el-row style="float: right">
@@ -65,6 +66,32 @@ import { Message } from "element-ui";
 export default {
   data() {
     return {
+        externalLink: {
+            markdown_css: function() {
+                // 这是你的markdown css文件路径
+                return '/mavon-editor/markdown/github-markdown.min.css';
+            },
+            hljs_js: function() {
+                // 这是你的hljs文件路径
+                return '/mavon-editor/highlightjs/highlight.min.js';
+            },
+            hljs_css: function(css) {
+                // 这是你的代码高亮配色文件路径
+                return '/mavon-editor/highlightjs/styles/' + css + '.min.css';
+            },
+            hljs_lang: function(lang) {
+                // 这是你的代码高亮语言解析路径
+                return '/mavon-editor/highlightjs/languages/' + lang + '.min.js';
+            },
+            katex_css: function() {
+                // 这是你的katex配色方案路径路径
+                return '/mavon-editor/katex/katex.min.css';
+            },
+            katex_js: function() {
+                // 这是你的katex.js路径
+                return '/mavon-editor/katex/katex.min.js';
+            },
+        },
       markdown: {
         codeStyle: "atom-one-dark",
         markdownOption: {
@@ -136,6 +163,10 @@ export default {
       : [];
   },
   mounted() {
+  
+    let that = this;
+        that.markdown.codeStyle = "atom-one-dark";
+  
     this.timer = setInterval(this.intervalSave, 2 * 60 * 1000);
   },
   beforeDestroy() {

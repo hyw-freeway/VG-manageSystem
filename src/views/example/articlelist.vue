@@ -1,5 +1,8 @@
 <template>
-  <div class="currentW">
+  <div class="currentW"
+   v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
     <el-container
       style="
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
@@ -32,6 +35,8 @@
               :box-shadow="false"
               default-open="preview"
               :toolbars-flag="false"
+              :externalLink="externalLink"
+               :codeStyle="codeStyle"
             />
           </el-collapse-item>
         </el-collapse>
@@ -57,6 +62,34 @@ export default {
   },
   data() {
     return {
+      loading:true,
+      codeStyle:"",
+      externalLink: {
+            markdown_css: function() {
+                // 这是你的markdown css文件路径
+                return '/mavon-editor/markdown/github-markdown.min.css';
+            },
+            hljs_js: function() {
+                // 这是你的hljs文件路径
+                return '/mavon-editor/highlightjs/highlight.min.js';
+            },
+            hljs_css: function(css) {
+                // 这是你的代码高亮配色文件路径
+                return '/mavon-editor/highlightjs/styles/' + css + '.min.css';
+            },
+            hljs_lang: function(lang) {
+                // 这是你的代码高亮语言解析路径
+                return '/mavon-editor/highlightjs/languages/' + lang + '.min.js';
+            },
+            katex_css: function() {
+                // 这是你的katex配色方案路径路径
+                return '/mavon-editor/katex/katex.min.css';
+            },
+            katex_js: function() {
+                // 这是你的katex.js路径
+                return '/mavon-editor/katex/katex.min.js';
+            },
+        },
       list: null,
       roles: [],
       uid: 1,
@@ -73,6 +106,7 @@ export default {
     this.uid = this.getUid();
     if (this.uid == null) {
       this.list = [];
+      this.loading=false
     } else {
       this.getList();
     }
@@ -100,6 +134,7 @@ export default {
         this.list = response;
         console.log(this.list);
         this.listLoading = false;
+        this.loading=false
       });
     },
     edit(aid, uid) {
@@ -118,6 +153,10 @@ export default {
       });
     },
   },
+  mounted(){
+    let that = this;
+        that.codeStyle = "atom-one-dark";
+  }
 };
 </script>
 

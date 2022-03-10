@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+   v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading">
     <el-table
       ref="multipleTable"
       :data="list"
@@ -50,6 +53,7 @@
 export default {
   data() {
     return {
+      loading:true,
       list: [],
       multipleSelection: [],
     };
@@ -57,6 +61,7 @@ export default {
   created() {
     this.list = JSON.parse(localStorage.getItem("cglist"));
     console.log(this.list);
+    this.loading=false
   },
   methods: {
       edit(info){
