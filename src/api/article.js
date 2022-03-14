@@ -3,42 +3,42 @@ import request from '@/utils/request'
 
 export function getPostsByWeek(time) {
   return request({
-    url: '/api/article/selectAllReports',
+    url: '/article/selectAllReports',
     method: 'get',
     params:{time},
   })
 }
 export function fetchArticle(uid) {
   return request({
-    url: '/api/article/select/' + uid,
+    url: '/article/select/' + uid,
     method: 'get',
     params: { uid }
   })
 }
 export function getMarkdownArticleByAid(id) {
   return request({
-    url: '/api/article/show/' + id,
+    url: '/article/show/' + id,
     method: 'get',
     params: { id }
   })
 }
 export function createMarkdownArticle(data) {
   return request({
-    url: '/api/article/add',
+    url: '/article/add',
     method: 'post',
     data
   })
 }
 export function saveMarkdownArticle(data) {
   return request({
-    url: '/api/article/updateArticle',
+    url: '/article/updateArticle',
     method: 'put',
     data
   })
 }
 export function uploadImg(data) {
   return request({
-    url: '/api/article/uploading',
+    url: '/article/uploading',
     method: 'post',
     data: { data }
     // headers:{'Content-Type':"application/x-www-form-urlencoded"}
@@ -47,7 +47,7 @@ export function uploadImg(data) {
 }
 export function delArticle(id) {
   return request({
-    url: '/api/article/delete',
+    url: '/article/delete',
     method: 'delete',
     params: { id }
   })
