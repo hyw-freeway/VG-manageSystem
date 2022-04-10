@@ -13,25 +13,7 @@
         <h3 class="title">注册界面</h3>
       </div>
 
-      <!-- <div
-        class="avatar-uploader"
-        @click="onChange"
-      >
-        <img v-if="imageUrl" :src="imageUrl" class="avatar" alt>
-        <img v-if="!imageUrl" src="@/assets/1.png" class="avatar" alt />
-        <i v-else class="el-icon-plus avatar-uploader-icon" />
-      </div>
-      <image-cropper
-        v-show="imagecropperShow"
-        :key="imagecropperKey"
-        :width="300"
-        :height="300"
-        :pid=1
-        url="/api/article/uploading"
-        lang-type="en"
-        @close="close"
-        @crop-upload-success="cropSuccess"
-      /> -->
+
 
       <el-form-item prop="username">
         <span class="svg-container">
@@ -111,7 +93,7 @@
           <span style="margin-right: 18px">Username : editor</span>
           <span />
         </div>
-     
+
         <el-button class="toLogin-button" type="primary" @click="toLogin">
           登录
         </el-button>
@@ -210,44 +192,10 @@ export default {
   },
   methods: {
 
-    // cropSuccess(resData) {
-    //   this.imagecropperShow = false
-    //   this.imagecropperKey = this.imagecropperKey + 1
-    //   this.imageUrl = '/api/article/image/'+resData
-    // },
-    // close() {
-    //   this.imagecropperShow = false
-    // },
+
     toLogin() {
       this.$router.push('Login')
     },
-    // beforeUpload() {
-    //   //   const isJPG = file.type === 'image/jpeg';
-    //   //   const isLt2M = file.size / 1024 / 1024 < 2;
-    //   //   if (!isJPG) {
-    //   //   this.$message.error('上传头像图片只能是 JPG 格式!');
-    //   //   }
-    //   //   if (!isLt2M) {
-    //   //   this.$message.error('上传头像图片大小不能超过 2MB!');
-    //   //   }
-    //   //   return isJPG && isLt2M;
-    // },
-    // onChange(file, fileList) {
-    //   this.imagecropperShow = true
-    //   var _this = this
-    //   var event = event || window.event
-    //   var file = event.target.files[0]
-    //   var reader = new FileReader()
-    //   // 转base64
-    //   reader.onload = function(e) {
-    //     _this.imageUrl = e.target.result // 将图片路径赋值给src
-    //     console.log(_this.imageUrl)
-    //   }
-    //   reader.readAsDataURL(file)
-    // },
-    // handleChange(res, file) {
-    //   // this.imageUrl = URL.createObjectURL(file.raw);
-    // },
 
     checkCapslock(e) {
       const { key } = e
@@ -267,14 +215,11 @@ export default {
       if (this.loginForm.password === '' || this.loginForm.username === '' || this.loginForm.email === '') {
         Message('账号或密码或邮箱不能为空')
       } else {
-        
-        console.log(this.loginForm)
         register(this.loginForm).then((res) => {
-          console.log(res)
           if (res.id) {
               Message("注册成功，请重新登录")
             this.$router.push('Login')
-          } 
+          }
           else if(res.msg=="用户名重复，注册失败!"){
               Message("用户名重复，请联系管理员")
           }

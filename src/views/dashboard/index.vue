@@ -8,7 +8,7 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
       "
     >
-      
+
       <el-main class="mains">
         <el-card class="box-card" v-show="postListPerWeek.length == 0">
           <div v-show="postListPerWeek.length == 0">本周暂无周报</div>
@@ -25,7 +25,7 @@
                <div class="username"> {{item.author.username}}</div>
                <div class="time text-item">{{item.publishDate}}</div>
              <div class="title text-item"> {{item.title}}</div>
-              
+
               <div class="check">
                 <el-link icon="el-icon-view"
                   >查看
@@ -92,8 +92,7 @@ export default {
   },
   methods: {
      hasadmin() {
-      this.roles = localStorage.getItem('roles'),
-      console.log(this.roles.indexOf('admin'))
+      this.roles = localStorage.getItem('roles')
       if (this.roles.indexOf('admin') !== -1) {
         return true
       } else {
@@ -101,15 +100,12 @@ export default {
       }
     },
     edit(aid,uid) {
-      console.log(aid)
       this.$router.push({ path: '/example/edit', query: { Aid: aid, Uid: uid }})
     },
   },
   created() {
     let time = getDate();
-    console.log(time)
     getPostsByWeek(time).then((r) => {
-      console.log(r)
       this.postListPerWeek = r;
       this.loading=false
     });
@@ -138,16 +134,16 @@ export default {
 }
 .title{
  position: absolute;
-//  left: 105px;  
+//  left: 105px;
  left: 30px;
- top:75px; 
+ top:75px;
 color: black;
 }
 .time{
 position: absolute;
 font-size: 12px;
 top:43px;
- left: 30px;  
+ left: 30px;
 }
 .tit {
   font-size: 22px;
@@ -166,12 +162,12 @@ top:43px;
   font-size: 15px !important;
   padding-left: 30px;
   height: 130px ;
-    
-  
+
+
 }
 .el-collapse-item{
   position: relative;
- 
+
 }
 .check{
 position: absolute;

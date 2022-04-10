@@ -1,11 +1,10 @@
 import request from '@/utils/request'
 
-
 export function getPostsByWeek(time) {
   return request({
     url: '/article/selectAllReports',
     method: 'get',
-    params:{time},
+    params: { time }
   })
 }
 export function fetchArticle(uid) {

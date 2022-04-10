@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
      <div class="title-container">
-       <div class="title">登陆界面</div> 
+       <div class="title">登陆界面</div>
       </div>
     <el-form
       ref="loginForm"
@@ -52,8 +52,8 @@
             <label>记住密码</label>
             <input type="checkbox" v-model="loginForm.checked">
         </div>
-        
-    
+
+
       <el-button
         :loading="loading"
         type="primary"
@@ -72,7 +72,7 @@
     <el-button class="toRegister-button" type="primary" @click="toRegister">
           注册
         </el-button>
-        
+
       </div>
     </el-form>
   </div>
@@ -82,6 +82,7 @@
 import { validUsername } from "@/utils/validate";
 import { login, getSession } from '@/api/user'
 import { Message } from 'element-ui';
+import { Base64 } from 'js-base64'
 export default {
   name: "Login",
   data() {
@@ -127,11 +128,11 @@ export default {
     },
   },
   created() {
-   
+
     var vm = this;
       // 在页面加载时从cookie获取登录信息
       let username = vm.getCookie("username");
-      let password = vm.getCookie("password");
+      let password = Base64.decode( vm.getCookie("password"));
 
       // 如果存在赋值给表单，并且将记住密码勾选
       if (username) {
@@ -160,9 +161,7 @@ export default {
         Message('账号或密码不能为空')
       } else {
         this.setUserInfo();
-        console.log(this.loginForm.password)
         login(this.loginForm.password, this.loginForm.username).then((res) => {
-          console.log(res)
           localStorage.setItem("token",res.sessionId)
           localStorage.setItem('username', res.userInfo.username)
            localStorage.setItem('email', res.userInfo.email)
@@ -176,21 +175,21 @@ export default {
            this.$router.push({ path: this.redirect || "/" });
           if (res == 'Bad credentials') {
             Message('账号或密码错误，请重试')
-          } 
+          }
             })
           }
-        
+
       }
-    
+
   ,
    setUserInfo() {
-        
+
         // 判断用户是否勾选记住密码，如果勾选，向cookie中储存登录信息，
         // 如果没有勾选，储存的信息为空
         if (this.loginForm.checked) {
 
          this.setCookie("username", this.loginForm.username);
-          this.setCookie("password", this.loginForm.password);
+          this.setCookie("password", Base64.encode(this.loginForm.password));
           this.setCookie("checked", this.loginForm.checked);
         } else {
           this.setCookie("username", "");
@@ -301,7 +300,7 @@ $light_gray: #eee;
     padding: 30px 35px 0;
     margin: 0 auto;
     overflow: hidden;
-     
+
   }
    .item {
     display: flex;
@@ -311,10 +310,10 @@ $light_gray: #eee;
     font-weight: 100;
     padding-bottom: 15px;
 }
-  
+
   .item label {
     width: 70px;
-    
+
 }
 
   .tips {
@@ -337,7 +336,7 @@ $light_gray: #eee;
     display: inline-block;
   }
 
- 
+
 
   .show-pwd {
     position: absolute;

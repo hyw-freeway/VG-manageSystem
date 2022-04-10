@@ -1,9 +1,6 @@
 import request from '@/utils/request'
 
 
-
-
-
 export function editRole(rids,uid) {
   return request({
     url: '/admin/user/role',

@@ -60,7 +60,6 @@ export default {
   },
   created() {
     this.list = JSON.parse(localStorage.getItem("cglist"));
-    console.log(this.list);
     this.loading=false
   },
   methods: {
@@ -109,7 +108,6 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection)
     },
   },
 };

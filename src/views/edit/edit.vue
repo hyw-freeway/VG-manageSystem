@@ -163,10 +163,10 @@ export default {
       : [];
   },
   mounted() {
-  
+
     let that = this;
         that.markdown.codeStyle = "atom-one-dark";
-  
+
     this.timer = setInterval(this.intervalSave, 2 * 60 * 1000);
   },
   beforeDestroy() {
@@ -269,8 +269,8 @@ export default {
       const base64Data = $file.miniurl; // 获取图片base64内容
       uploadImg(base64Data)
         .then((r) => {
-          console.log(r);
-          this.$refs.md.$img2Url(pos, "/api/article/image/" + r.msg);
+          //TODO:修改图片位置
+          this.$refs.md.$img2Url(pos, "http://localhost:8082/article/image/" + r.msg);
         })
         .catch((e) => {
           console.log(e);
@@ -278,8 +278,7 @@ export default {
     },
     imgDel(pos, url) {
       // 删除图片，并不是修改就会触发，仅支持工具栏操作
-      console.log(pos);
-      console.log(url);
+
     },
     goback() {
       this.$router.push("/example/userlist");
@@ -287,20 +286,15 @@ export default {
     delete(_arr, info) {
       var length = _arr.length;
       for (var i = 0; i < length; i++) {
-        console.log(i);
         if (_arr[i].id == info.id) {
           if (i == 0) {
             _arr.shift(); //删除并返回数组的第一个元素
-            console.log(_arr);
             return _arr;
           } else if (i == length - 1) {
-            console.log("222");
             _arr.pop(); //删除并返回数组的最后一个元素
-            console.log(_arr);
             return _arr;
           } else {
             _arr.splice(i, 1); //删除下标为i的元素
-            console.log(_arr);
             return _arr;
           }
         } else {
@@ -314,7 +308,6 @@ export default {
         : [];
       let l = this.info;
       let newlist = this.delete(oldlist, l) ? this.delete(oldlist, l) : [];
-      console.log(newlist);
       this.article["username"] = localStorage.getItem("username");
       this.article["time"] = getDate();
       this.article["uid"] = localStorage.getItem("uid");

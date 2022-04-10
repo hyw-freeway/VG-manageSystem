@@ -72,7 +72,7 @@
       </span>
     </el-dialog>
 
-   
+
   </div>
 </template>
 
@@ -126,7 +126,6 @@ export default {
     },
     del(info){
      deleteRole(info.id).then(res=>{
-       console.log(res)
           this.$router.go(0);
      })
     },
@@ -142,8 +141,6 @@ export default {
           Message("请重新选择")
         }
       })
-      console.log(this.selectedRoleId);
-      console.log(this.info);
     },
     setRoleDialogClosed() {
       this.setRoleDialogVisible = false;

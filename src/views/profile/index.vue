@@ -41,23 +41,17 @@ export default {
   components: { UserCard, Activity, Timeline, Account },
   data() {
     return {
-      
+
       user: {},
       activeTab: 'activity',
       id:null
     }
   },
-  // computed: {
-  //   ...mapGetters([
-  //     'name',
-  //     'avatar',
-  //     'roles'
-  //   ])
-  // },
+
   created() {
     this.id=localStorage.getItem("uid")
     this.getUser()
-   
+
   },
   methods: {
     getUser() {
@@ -65,11 +59,7 @@ export default {
          name: localStorage.getItem("username"),
         role: localStorage.getItem("roles"),
         email: 'admin@test.com',
-       // avatar: localStorage.getItem("avatar")
-        // name: this.name,
-        // role: this.roles.join(' | '),
-        // email: 'admin@test.com',
-        // avatar: this.avatar
+
       }
     }
   }

@@ -113,8 +113,7 @@ export default {
   },
   methods: {
     hasadmin() {
-      (this.roles = localStorage.getItem("roles")),
-        console.log(this.roles.indexOf("admin"));
+      (this.roles = localStorage.getItem("roles"))
       if (this.roles.indexOf("admin") !== -1) {
         return true;
       } else {
@@ -132,22 +131,18 @@ export default {
       this.listLoading = true;
       fetchArticle(this.uid).then((response) => {
         this.list = response;
-        console.log(this.list);
         this.listLoading = false;
         this.loading=false
       });
     },
     edit(aid, uid) {
-      console.log(aid);
       this.$router.push({
         path: "/example/edit",
         query: { Aid: aid, Uid: uid },
       });
     },
     del(aid) {
-      console.log(aid);
       delArticle(aid).then((res) => {
-        console.log(res);
         //  location.reload()
         this.$router.push({ path: "/example/userlist" });
       });

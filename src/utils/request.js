@@ -2,30 +2,32 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-
-let baseURL = "/api"
-if(process.env.NODE_ENV === "development"){
-  baseURL = "http://192.168.196.22:8082"
-}else if (process.env.NODE_ENV === "production"){
-  baseURL = "http://47.101.198.23:8082"
+//
+let baseURL = '/api'
+if(process.env.NODE_ENV === 'development'){
+  baseURL = 'http://localhost:8082'
+}else if (process.env.NODE_ENV === 'production'){
+  baseURL = 'http://yhli.work/api'
 }
 // create an axios instance
+axios.defaults.withCredentials=true;//让ajax携带cookie
 const service = axios.create({
-  baseURL, // url = base url + request url
+  // baseURL:"http://localhost:8082",
+   baseURL, // url = base url + request url
    //withCredentials: true, // send cookies when cross-domain requests
   timeout: 500000 // request timeout
 })
 		//	设置
 		// service.withCredentials = true;
 		// service.defaults.withCredentials = true;
-		
+
 		// //	或者这样设置
 		// service.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
 		// service.defaults.crossDomain = true;
 		// service.defaults.withCredentials = true;  //设置cross跨域 并设置访问权限 允许跨域携带cookie信息
 		// service.defaults.headers.common['Authorization'] = ''; // 设置请求头为 Authorization
-		
-		
+
+
 
 // request interceptor
 service.interceptors.request.use(
@@ -33,7 +35,6 @@ service.interceptors.request.use(
     // do something before request is sent
     const token = localStorage.getItem('token')
     if (token) {
-      console.log(token)
       config.headers.common['Authorization'] = token
     }
     return config
@@ -78,7 +79,7 @@ service.interceptors.response.use(
         // })
       })
     }
-     
+
       return res
    // }
   },

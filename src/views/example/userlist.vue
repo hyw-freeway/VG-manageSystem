@@ -57,7 +57,7 @@
       </el-col>
     </el-row>
 
-   
+
   </div>
 </template>
 
@@ -82,16 +82,14 @@ export default {
 this.img='/api/article/image/'+this.imageUrl
     getUsers().then((r) => {
       this.listOfPerson = r
-      console.log(this.listOfPerson)
       this.loading=false
     })
   },
   methods: {
     checkUser(uid) {
-      console.log('12165')
       this.$router.push({ path: '/example/articlelist', query: { Uid: uid }})
     }
-   
+
   }
 }
 </script>

@@ -7,6 +7,7 @@ export function login(password, username) {
     params: { password, username }
   })
 }
+
 export function register(data) {
   return request({
     url: '/register',
