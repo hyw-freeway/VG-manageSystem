@@ -161,6 +161,7 @@ export default {
         Message('账号或密码不能为空')
       } else {
         this.setUserInfo();
+       // this.$router.push({ path: this.redirect || "/" });
         login(this.loginForm.password, this.loginForm.username).then((res) => {
           localStorage.setItem("token",res.sessionId)
           localStorage.setItem('username', res.userInfo.username)
@@ -180,6 +181,7 @@ export default {
           }
 
       }
+    
 
   ,
    setUserInfo() {

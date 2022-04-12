@@ -47,6 +47,9 @@
           </el-collapse-item>
         </el-collapse>
       </el-main>
+<el-footer>
+     <el-row> Copyright  2021 西南交通大学. All rights reserved. 蜀ICP备2022007878号 <a href="https://beian.miit.gov.cn/#/Integrated/index">https://beian.miit.gov.cn/#/Integrated/index</a></el-row>
+   </el-footer>
     </el-container>
   </div>
 </template>
@@ -55,7 +58,9 @@
 import { getPostsByWeek } from "@/api/article";
 import { getDate } from "@/utils/date";
 
+
 export default {
+
    name: "Dashboard",
   data() {
     return {
@@ -128,6 +133,10 @@ export default {
 .currentW {
   margin: 0 10px auto 10px;
 }
+// .el-container{
+//    min-height: 100vh;
+//    align-items: center;
+// }
 .username{
   font-size: 35px;
   margin-top: -50px;
@@ -153,6 +162,18 @@ top:43px;
 .mains {
   margin-top: 0px;
   padding-top: 10px;
+  min-height: 100%;
+  justify-content:space-between;
+}
+.el-container{
+  min-height: 100vh;
+  align-items: center;
+}
+.el-row{
+  height: 1vh;
+  width: 100%;
+  align-items: center;
+  color: #909399;
 }
 .card {
   margin-top: 0px;

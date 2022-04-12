@@ -4,6 +4,7 @@
    v-loading="loading"
     element-loading-text="拼命加载中"
     element-loading-spinner="el-icon-loading">
+    <el-container>
     <el-row :gutter="40" class="el-row" type="flex">
       <el-col
         v-for="(item, index) in listOfPerson"
@@ -56,6 +57,10 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-footer>
+        <p class="footer">Copyright  2021 西南交通大学. All rights reserved. 蜀ICP备2022007878号 <a href="https://beian.miit.gov.cn/#/Integrated/index" style="color:#909399;text-decoration:none" >https://beian.miit.gov.cn/#/Integrated/index</a></p>
+      </el-footer>
+    </el-container>
 
 
   </div>
@@ -95,6 +100,16 @@ this.img='/api/article/image/'+this.imageUrl
 </script>
 
 <style lang="scss">
+.el-container{
+  min-height: 100vh;
+  align-items: center;
+}
+.footer{
+  height: 1vh;
+  width: 100%;
+  align-items: center;
+  color: #909399;
+}
 .image {
   border: 1px dashed rgba(255, 255, 255, 0.1);
   cursor: pointer;

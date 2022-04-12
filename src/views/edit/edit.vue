@@ -3,6 +3,7 @@
     style="
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
     "
+    direction="vertical"
   >
     <!-- <div class="switch__circle"></div>
     <div class="switch__circle switch__circle--t"></div> -->
@@ -47,7 +48,11 @@
           >发表文章</el-button
         >
       </el-row>
+      
     </div>
+    <el-footer>
+        <p class="footer">Copyright  2021 西南交通大学. All rights reserved. 蜀ICP备2022007878号 <a href="https://beian.miit.gov.cn/#/Integrated/index" style="color:#909399;text-decoration:none" >https://beian.miit.gov.cn/#/Integrated/index</a></p>
+      </el-footer>
   </el-container>
 </template>
 
@@ -333,11 +338,19 @@ export default {
   padding-bottom: 8px;
   margin: auto;
   width: 90%;
+   height: 800px;
 }
-/* .el-container {
-  margin-top: 10px;
-  margin-bottom: 10px;
-} */
+.el-container{
+ height: 100%;
+  align-items: center;
+}
+.footer{
+  height: 20px;
+  width: 100%;
+  align-items: center;
+  color: #909399;
+  line-height: 20px;
+}
 
 .el-button {
   width: 100px;

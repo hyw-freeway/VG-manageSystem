@@ -3,7 +3,7 @@
    v-loading="loading"
     element-loading-text="拼命加载中"
     element-loading-spinner="el-icon-loading">
-
+<el-container>
     <el-table :data="listOfPerson" style="width: 100%; margin-top: 30px" border>
       <el-table-column type="index" align="center" label="编号" width="220">
       </el-table-column>
@@ -71,6 +71,10 @@
         <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
       </span>
     </el-dialog>
+   <el-footer>
+        <p class="footer">Copyright  2021 西南交通大学. All rights reserved. 蜀ICP备2022007878号 <a href="https://beian.miit.gov.cn/#/Integrated/index" style="color:#909399;text-decoration:none" >https://beian.miit.gov.cn/#/Integrated/index</a></p>
+      </el-footer>
+</el-container>
 
 
   </div>
@@ -150,6 +154,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-container{
+  min-height: 100vh;
+  align-items: center;
+}
+.footer{
+  height: 1vh;
+  width: 100%;
+  align-items: center;
+  color: #909399;
+}
 .app-container {
   .roles-table {
     margin-top: 30px;
