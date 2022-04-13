@@ -7,6 +7,9 @@
         <navbar />
       </div>
       <app-main />
+       <div :class="{'fixed-footer':fixedFooter}" class="fixed-footer">
+        Copyright  2022 西南交通大学. All rights reserved.  <a href="https://beian.miit.gov.cn/#/Integrated/index">蜀ICP备2022007878号</a>
+      </div>
     </div>
   </div>
 </template>
@@ -88,6 +91,27 @@ export default {
   }
 
   .mobile .fixed-header {
+    width: 100%;
+  }
+
+    .fixed-footer {
+    position: fixed;
+    padding-bottom: 5px;
+    bottom: 0;
+    right: 0;
+    z-index: 9;
+    text-align: center;
+    width: calc(100% - #{$sideBarWidth});
+    transition: width 0.28s;
+      background-color: white;
+    color: #909399;
+  }
+
+  .hideSidebar .fixed-footer {
+    width: calc(100% - 54px)
+  }
+
+  .mobile .fixed-footer {
     width: 100%;
   }
 </style>
