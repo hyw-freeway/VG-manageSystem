@@ -7,9 +7,9 @@
         <navbar />
       </div>
       <app-main />
-       <div :class="{'fixed-footer':fixedFooter}" class="fixed-footer">
+       <!-- <div :class="{'fixed-footer':fixedFooter}" class="fixed-footer">
         Copyright  2022 西南交通大学. All rights reserved.  <a href="https://beian.miit.gov.cn/#/Integrated/index">蜀ICP备2022007878号</a>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

@@ -86,11 +86,11 @@
       <div style="position: relative">
 
         <div class="tips">
-          <span>Username : admin</span>
+          <span>Username : Please enter true name</span>
           <span />
         </div>
         <div class="tips">
-          <span style="margin-right: 18px">Username : editor</span>
+          <span style="margin-right: 18px">Password : Please enter 6 digits at least</span>
           <span />
         </div>
 
@@ -124,7 +124,7 @@ export default {
   components: { ImageCropper },
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (value.length=0) {
         callback(new Error('Please enter the correct user name'))
       } else {
         callback()
