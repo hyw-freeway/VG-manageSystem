@@ -18,7 +18,7 @@
           >
             <template slot="title" class="tit">
               <div class="title">{{ item.title }}</div>
-              <div class="time text-item">{{ item.publishDate }}</div>
+              <div class="time text-item">{{ item.pub_date|data }}</div>
               <div class="check1">
                 <el-link icon="el-icon-view">查看 </el-link>
               </div>
@@ -101,6 +101,11 @@ export default {
       },
     };
   },
+  filters:{
+     data(value){
+      return value.substring(0,10)
+     }
+  },
   created() {
     this.getUsername();
     this.uid = this.getUid();
@@ -130,7 +135,7 @@ export default {
     getList() {
       this.listLoading = true;
       fetchArticle(this.uid).then((response) => {
-        this.list = response;
+        this.list = response.data;
         this.listLoading = false;
         this.loading=false
       });

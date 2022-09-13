@@ -7,7 +7,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img  v-if="imageUrl" :src=" '/api/article/image/'+imageUrl" class="user-avatar"/>
+          <img  v-if="imageUrl" :src="  'http://127.0.0.1:3007/images/'+imageUrl" class="user-avatar"/>
            <img   v-if="!imageUrl" src="../../assets/1.png" class="user-avatar"/>
           <i class="el-icon-caret-bottom" />
         </div>
@@ -53,7 +53,7 @@ export default {
   created() {
      this.imageUrl=localStorage.getItem("imageUrl");
      if(this.imageUrl===null) {
-       this.imageUrl = "2022-03-06ca922e80a760458a9ee35552581c45c9.png"
+       this.imageUrl = "1.png"
      }
 
   },

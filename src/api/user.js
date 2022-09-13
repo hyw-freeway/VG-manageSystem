@@ -2,15 +2,15 @@ import request from '@/utils/request'
 
 export function login(password, username) {
   return request({
-    url: '/login',
+    url: '/api/login',
     method: 'post',
-    params: { password, username }
+    data: { password, username }
   })
 }
 
 export function register(data) {
   return request({
-    url: '/register',
+    url: '/api/reguser',
     method: 'post',
     data
   })
@@ -32,9 +32,17 @@ export function getSession() {
 }
 export function getUsers() {
   return request({
-    url: '/selectAllUsers',
+    url: '/my/userall',
     method: 'get'
 
+  })
+}
+export function updateInfo(name,email) {
+  console.log(name,email)
+  return request({
+    url: '/my/userinfo',
+    method: 'post',
+    data:{username:name,email}
   })
 }
 

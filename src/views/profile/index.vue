@@ -60,7 +60,7 @@ export default {
       this.user = {
          name: localStorage.getItem("username"),
         role: localStorage.getItem("roles"),
-        email: 'admin@test.com',
+        email:  localStorage.getItem("email"),
 
       }
     }

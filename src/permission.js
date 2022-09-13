@@ -26,7 +26,7 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      const roles = JSON.parse(localStorage.getItem('roles'))
+      const roles = localStorage.getItem('roles')
       // determine whether the user has obtained his permission roles through getInfo
       const hasRoles = roles && roles.length > 0
       if (hasRoles) {
@@ -34,7 +34,7 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          roles = JSON.parse(localStorage.getItem('roles'))
+          roles = localStorage.getItem('roles')
 
           next()
         } catch (error) {

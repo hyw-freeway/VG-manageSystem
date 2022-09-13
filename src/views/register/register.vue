@@ -216,12 +216,9 @@ export default {
         Message('账号或密码或邮箱不能为空')
       } else {
         register(this.loginForm).then((res) => {
-          if (res.id) {
+          if (res.status==0) {
               Message("注册成功，请重新登录")
             this.$router.push('Login')
-          }
-          else if(res.msg=="用户名重复，注册失败!"){
-              Message("用户名重复，请联系管理员")
           }
           else {
             Message('注册失败，请重新注册')

@@ -101,6 +101,7 @@ export default {
       }
     };
     return {
+     
       loginForm: {
         username: "",
         password: "",
@@ -163,16 +164,18 @@ export default {
         this.setUserInfo();
        // this.$router.push({ path: this.redirect || "/" });
         login(this.loginForm.password, this.loginForm.username).then((res) => {
-          localStorage.setItem("token",res.sessionId)
-          localStorage.setItem('username', res.userInfo.username)
-           localStorage.setItem('email', res.userInfo.email)
-          localStorage.setItem('uid', res.userInfo.id)
-          if(res.userInfo.avatarName===null){
-         localStorage.setItem('imageUrl', "2022-03-06ca922e80a760458a9ee35552581c45c9.png")
+          console.log(res)
+          localStorage.setItem("token",res.token)
+          localStorage.setItem('username', res.user.username)
+           localStorage.setItem('email', res.user.email)
+          localStorage.setItem('uid', res.user.id)
+          
+          if(res.user.user_pic===null){
+         localStorage.setItem('imageUrl', "1.png")
           }else{
-          localStorage.setItem('imageUrl', res.userInfo.avatarName)
+          localStorage.setItem('imageUrl', res.user.user_pic)
           }
-          localStorage.setItem('roles', JSON.stringify(res.userInfo.roles))
+          localStorage.setItem('roles', JSON.stringify(res.user.roles))
            this.$router.push({ path: this.redirect || "/" });
           if (res == 'Bad credentials') {
             Message('账号或密码错误，请重试')

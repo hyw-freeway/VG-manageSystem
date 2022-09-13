@@ -492,6 +492,7 @@ export default {
         this.startCrop()
       }
       fr.readAsDataURL(file)
+      localStorage.setItem("picname",file.name)
     },
     // 剪裁前准备工作
     startCrop() {
@@ -779,7 +780,7 @@ export default {
         id,
         data
       } = this
-      console.log(data)
+      console.log(this)
       // const fmData = new FormData()
       // fmData.append(
       //   field,
@@ -805,12 +806,19 @@ export default {
       request({
         url,
         method: 'post',
-        data:{ data,id}
+        data:{ base64Data:data,picname:localStorage.getItem("picname")}
       })
         .then(resData => {
+          
           console.log(resData)
           this.loading = 2
-          this.$emit('crop-upload-success', resData.msg)
+          this.$emit('crop-upload-success', resData.picname)
+          request({
+            url:"http://127.0.0.1:3007/my/update/avatar",
+            method: 'post',
+            data:{picname:localStorage.getItem("picname")}
+
+          })
         })
         .catch(err => {
           if (this.value) {

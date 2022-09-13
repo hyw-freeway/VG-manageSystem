@@ -22,8 +22,8 @@
             :disabled="postListPerWeek.length == 0"
           >
             <template slot="title">
-               <div class="username"> {{item.author.username}}</div>
-               <div class="time text-item">{{item.publishDate}}</div>
+               <div class="username"> {{item.author_name}}</div>
+               <div class="time text-item">{{item.pub_date|data}}</div>
              <div class="title text-item"> {{item.title}}</div>
 
               <div class="check">
@@ -31,7 +31,7 @@
                   >查看
                 </el-link>
               </div >
-              <div class="edit" @click="edit(item.id,item.uid)"  v-if="hasadmin()">
+              <div class="edit" @click="edit(item.id,item.author_id)"  v-if="hasadmin()">
                 <el-link icon="el-icon-edit">编辑</el-link>
               </div>
             </template>
@@ -105,10 +105,16 @@ export default {
       this.$router.push({ path: '/example/edit', query: { Aid: aid, Uid: uid }})
     },
   },
+  filters:{
+     data(value){
+      return value.substring(0,10)
+     }
+  },
   created() {
     let time = getDate();
     getPostsByWeek(time).then((r) => {
-      this.postListPerWeek = r;
+      console.log(r.data)
+      this.postListPerWeek = r.data;
       this.loading=false
     });
   },

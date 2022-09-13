@@ -5,13 +5,13 @@ import { getToken } from '@/utils/auth'
 //
 let baseURL = '/api'
 if(process.env.NODE_ENV === 'development'){
-  baseURL = 'http://localhost:8082'
+  baseURL = 'http://127.0.0.1:3007'
   //baseURL = 'http://yhli.work/api'
 }else if (process.env.NODE_ENV === 'production'){
   baseURL = 'http://yhli.work/api'
 }
 // create an axios instance
-axios.defaults.withCredentials=true;//让ajax携带cookie
+//axios.defaults.withCredentials=true;//让ajax携带cookie
 const service = axios.create({
   // baseURL:"http://localhost:8082",
    baseURL, // url = base url + request url

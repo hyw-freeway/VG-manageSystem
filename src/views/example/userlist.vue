@@ -17,9 +17,9 @@
             <img
               src="@/assets/1.png"
               class="image"
-               v-if="!item.avatarName"
+               v-if="!item.user_pic"
             />
-            <img v-if="item.avatarName" :src="'/api/article/image/'+item.avatarName" class="image" alt />
+            <img v-if="item.user_pic" :src="'http://127.0.0.1:3007/images/'+item.user_pic" class="image" alt />
             <div>{{ item.username }}</div>
           </div>
           <div>
@@ -44,12 +44,10 @@
                 <span>角色：</span>
               </div>
               <div
-                v-for="(item, index) in item.roles"
-                :key="index"
                 class="item_desr"
               >
                 <span>
-                  {{ item.nameZh }}
+                  {{ item.roles }}
                 </span>
               </div>
             </div>
@@ -80,11 +78,12 @@ export default {
   created() {
     this.imageUrl=localStorage.getItem("imageUrl")
     if(this.imageUrl===null){
-      this.imageUrl="2022-03-06ca922e80a760458a9ee35552581c45c9.png"
+      this.imageUrl="1.png"
     }
-this.img='/api/article/image/'+this.imageUrl
+this.img='http://127.0.0.1:3007/images/'+this.imageUrl
     getUsers().then((r) => {
-      this.listOfPerson = r
+      this.listOfPerson = r.data
+      console.log(r.data)
       this.loading=false
     })
   },

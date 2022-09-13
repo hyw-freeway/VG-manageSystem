@@ -11,7 +11,7 @@
           {{ user.role }}
         </pan-thumb> -->
         <div class="avatar-uploader" @click="onChange">
-          <img v-if="imageUrl" :src=" '/api/article/image/'+imageUrl" class="avatar" alt />
+          <img v-if="imageUrl" :src="  'http://127.0.0.1:3007/images/'+imageUrl" class="avatar" alt />
           <img v-if="!imageUrl" src="@/assets/1.png" class="avatar" alt />
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </div>
@@ -21,7 +21,7 @@
           :width="300"
           :height="300"
           :pid="uid"
-          url="/api/article/uploading"
+          url='http://127.0.0.1:3007/my/article/uploadpic'
           lang-type="en"
           @close="close"
           @crop-upload-success="cropSuccess"
@@ -30,7 +30,7 @@
       <div class="box-center">
         <div class="user-name text-center">{{ user.name }}</div>
         <div class="user-role text-center text-muted" >
-         角色： {{ JSON.parse( user.role)[0].nameZh}}
+         角色： {{ user.role}}
         </div>
       </div>
     </div>
@@ -111,9 +111,8 @@ export default {
  created() {
    this.imageUrl=localStorage.getItem("imageUrl")
    if(this.imageUrl===null){
-     this.image="2022-03-06ca922e80a760458a9ee35552581c45c9.png"
+     this.image="1.png"
    }
-   console.log(typeof(this.uid))
  },
   methods: {
     cropSuccess(resData) {

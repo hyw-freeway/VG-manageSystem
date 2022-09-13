@@ -1,20 +1,20 @@
 import request from '@/utils/request'
 
 
-export function editRole(rids,uid) {
+export function editRole(roles,id) {
   return request({
-    url: '/admin/user/role',
-    method: 'put',
-    params:{rids,uid}
+    url: '/my/userroles',
+    method: 'post',
+    data:{roles,id}
   })
 }
 
 
 
-export function deleteRole(uid) {
+export function deleteRole(id) {
   return request({
-    url: '/admin/user/delete',
+    url: '/my/deleteuser',
     method: 'delete',
-    params:{uid}
+    params:{id}
   })
 }

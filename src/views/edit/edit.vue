@@ -33,7 +33,7 @@
         @save="save"
         @imgAdd="imgAdd"
         @imgDel="imgDel"
-      :externalLink="externalLink"
+        :externalLink="externalLink"
       />
       <br />
       <el-row style="float: right">
@@ -47,7 +47,6 @@
           >发表文章</el-button
         >
       </el-row>
-      
     </div>
   </el-container>
 </template>
@@ -63,36 +62,37 @@ import {
 import { getDate } from "@/utils/date";
 import axios from "axios";
 import { Message } from "element-ui";
+import { nanoid } from "nanoid";
 
 export default {
   data() {
     return {
-        externalLink: {
-            markdown_css: function() {
-                // 这是你的markdown css文件路径
-                return '/mavon-editor/markdown/github-markdown.min.css';
-            },
-            hljs_js: function() {
-                // 这是你的hljs文件路径
-                return '/mavon-editor/highlightjs/highlight.min.js';
-            },
-            hljs_css: function(css) {
-                // 这是你的代码高亮配色文件路径
-                return '/mavon-editor/highlightjs/styles/' + css + '.min.css';
-            },
-            hljs_lang: function(lang) {
-                // 这是你的代码高亮语言解析路径
-                return '/mavon-editor/highlightjs/languages/' + lang + '.min.js';
-            },
-            katex_css: function() {
-                // 这是你的katex配色方案路径路径
-                return '/mavon-editor/katex/katex.min.css';
-            },
-            katex_js: function() {
-                // 这是你的katex.js路径
-                return '/mavon-editor/katex/katex.min.js';
-            },
+      externalLink: {
+        markdown_css: function () {
+          // 这是你的markdown css文件路径
+          return "/mavon-editor/markdown/github-markdown.min.css";
         },
+        hljs_js: function () {
+          // 这是你的hljs文件路径
+          return "/mavon-editor/highlightjs/highlight.min.js";
+        },
+        hljs_css: function (css) {
+          // 这是你的代码高亮配色文件路径
+          return "/mavon-editor/highlightjs/styles/" + css + ".min.css";
+        },
+        hljs_lang: function (lang) {
+          // 这是你的代码高亮语言解析路径
+          return "/mavon-editor/highlightjs/languages/" + lang + ".min.js";
+        },
+        katex_css: function () {
+          // 这是你的katex配色方案路径路径
+          return "/mavon-editor/katex/katex.min.css";
+        },
+        katex_js: function () {
+          // 这是你的katex.js路径
+          return "/mavon-editor/katex/katex.min.js";
+        },
+      },
       markdown: {
         codeStyle: "atom-one-dark",
         markdownOption: {
@@ -139,6 +139,7 @@ export default {
       },
       info: {},
       list: [],
+      author_name: "",
       article: {},
       markdownForm: {
         id: null,
@@ -159,14 +160,11 @@ export default {
   },
   created() {
     this.getArticle();
-    this.list = JSON.parse(localStorage.getItem("cglist"))
-      ? JSON.parse(localStorage.getItem("cglist"))
-      : [];
+    this.list = JSON.parse(localStorage.getItem("cglist"));
   },
   mounted() {
-
     let that = this;
-        that.markdown.codeStyle = "atom-one-dark";
+    that.markdown.codeStyle = "atom-one-dark";
 
     this.timer = setInterval(this.intervalSave, 2 * 60 * 1000);
   },
@@ -190,9 +188,10 @@ export default {
         } else {
           getMarkdownArticleByAid(aid)
             .then((r) => {
-              this.markdownForm.content = r.content == null ? "" : r.content;
-              this.markdownForm.id = r.id;
-              this.markdownForm.title = r.title;
+              this.markdownForm.content =
+                r.data.content == null ? "" : r.data.content;
+              this.markdownForm.id = r.data.id;
+              this.markdownForm.title = r.data.title;
               this.markdownForm.uid = this.uid;
               // this.markdownForm.type=r.data.type
             })
@@ -201,8 +200,7 @@ export default {
             });
         }
       } else {
-        this.markdownForm.content =
-          this.info.content == null ? "" : this.info.content;
+        this.markdownForm.content = this.info.content;
         this.markdownForm.id = this.info.id;
         this.markdownForm.title = this.info.title;
         this.markdownForm.uid = this.info.uid;
@@ -216,8 +214,18 @@ export default {
         console.log("保存文章，上传服务器");
         this.markdownForm.uid = localStorage.getItem("uid");
         console.log(this.markdownForm);
-        if (this.markdownForm.id == null) {
-          createMarkdownArticle(this.markdownForm)
+        console.log(this.markdownForm, typeof this.markdownForm.id);
+        if (
+          this.markdownForm.id == null ||
+          typeof this.markdownForm.id == "string"
+        ) {
+          console.log("1");
+          this.author_name = localStorage.getItem("username");
+          createMarkdownArticle({
+            title: this.markdownForm.title,
+            content: this.markdownForm.content,
+            author_name: this.author_name,
+          })
             .then((r) => {
               this.$message.success("创建成功");
               if (this.info) {
@@ -265,13 +273,18 @@ export default {
       }*/
     },
     imgAdd(pos, $file) {
-      // 添加图片，pos为位置
-      const $vm = this.$refs.md;
-      const base64Data = $file.miniurl; // 获取图片base64内容
-      uploadImg(base64Data)
+      //添加图片，pos为位置
+      let $vm = this.$refs.md;
+      console.log($file);
+      let base64Data = $file.miniurl; //获取图片base64内容
+      let picname = $file.name;
+      uploadImg({ picname, base64Data })
         .then((r) => {
-          //TODO:修改图片位置
-          this.$refs.md.$img2Url(pos, "http://localhost:8082/article/image/" + r.msg);
+          //todo:
+          this.$refs.md.$img2Url(
+            pos,
+            "http://127.0.0.1:3007/images/" + r.picname
+          );
         })
         .catch((e) => {
           console.log(e);
@@ -279,7 +292,6 @@ export default {
     },
     imgDel(pos, url) {
       // 删除图片，并不是修改就会触发，仅支持工具栏操作
-
     },
     goback() {
       this.$router.push("/example/userlist");
@@ -307,24 +319,33 @@ export default {
       let oldlist = JSON.parse(localStorage.getItem("cglist"))
         ? JSON.parse(localStorage.getItem("cglist"))
         : [];
-      let l = this.info;
-      let newlist = this.delete(oldlist, l) ? this.delete(oldlist, l) : [];
+      console.log(this.markdownForm.id);
+      if (this.info) {
+        let l = this.info;
+        oldlist = this.delete(oldlist, l);
+      }
       this.article["username"] = localStorage.getItem("username");
       this.article["time"] = getDate();
       this.article["uid"] = localStorage.getItem("uid");
       this.article["title"] = this.markdownForm.title;
-      this.article["id"] = this.markdownForm.id;
+      if (this.markdownForm.id) {
+        console.log(this.markdownForm.id);
+        this.article["id"] = this.markdownForm.id;
+        console.log(this.article);
+      } else {
+        this.article["id"] = nanoid();
+      }
+
       this.article["content"] = this.markdownForm.content;
-
-      newlist.push(this.article);
-
-      localStorage.setItem("cglist", JSON.stringify(newlist));
+      console.log(this);
+      oldlist.push(this.article);
+      localStorage.setItem("cglist", JSON.stringify(oldlist));
       this.$router.push({ path: "/example/cglist" });
     },
   },
 };
 </script>
-<style>
+<style scoped>
 .bjq {
   height: 578px;
   width: auto;
@@ -334,7 +355,7 @@ export default {
   padding-bottom: 8px;
   margin: auto;
   width: 90%;
-   height: 800px;
+  height: 800px;
 }
 
 .el-button {

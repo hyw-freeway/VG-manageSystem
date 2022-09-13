@@ -12,10 +12,10 @@
         />
         <img
           class="img-circle"
-          v-if="imageUrl" :src=" '/api/article/image/'+imageUrl"
+          v-if="imageUrl" :src=" 'http://127.0.0.1:3007/images/'+imageUrl"
         />
         <span class="username text-muted">{{ username }}</span>
-        <span class="description">{{ item.publishDate }}</span>
+        <span class="description">{{ item.pub_date }}</span>
       </div>
       <mavon-editor
         v-model="list[index].content"
@@ -57,7 +57,7 @@ export default {
   created() {
     this.imageUrl=localStorage.getItem("imageUrl");
      if(this.imageUrl===null){
-     this.image="2022-03-06ca922e80a760458a9ee35552581c45c9.png"
+     this.image="1.png"
    }
     this.uid = localStorage.getItem("uid");
     this.username = localStorage.getItem("username");
@@ -67,7 +67,7 @@ export default {
     getArticle() {
       this.loading = true;
       fetchArticle(this.uid).then((response) => {
-        this.list = response;
+        this.list = response.data;
         console.log(this.list);
         this.loading = false;
       });

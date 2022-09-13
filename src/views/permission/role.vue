@@ -19,13 +19,7 @@
       </el-table-column>
       <el-table-column align="center" label="角色">
         <template slot-scope="scope">
-          <div
-            v-for="(item, index) in scope.row.roles"
-            :key="index"
-            :disabled="enabled"
-            :label="scope.row.roles"
-            >{{ item.nameZh }}</div
-          >
+         {{ scope.row.roles }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
@@ -48,7 +42,7 @@
     >
       <div v-if="info.roles!==undefined">
         <p>当前的用户: {{ info.username }}</p>
-        <p>当前的角色: {{ info.roles[0].nameZh }}</p>
+        <p>当前的角色: {{ info.roles}}</p>
         <p>
           分配新角色:
           <!-- 角色选择下拉框
@@ -60,7 +54,7 @@
               v-for="item in rolesList"
               :key="item.id"
               :label="item.roleName"
-              :value="item.id"
+              :value="item.roleName"
             >
             </el-option>
           </el-select>
@@ -103,9 +97,9 @@ export default {
       noedit: true,
       chiocelist: [],
       rolesList: [
-        { id: 1, roleName: "管理员" },
-        { id: 2, roleName: "普通用户" },
-        { id: 3, roleName: "测试用户" },
+        { id: 1, roleName: "admin" },
+        { id: 2, roleName: "user" },
+       
       ],
       checked: true,
       info: {},
@@ -114,7 +108,8 @@ export default {
   computed: {},
   created() {
     getUsers().then((r) => {
-      this.listOfPerson = r;
+      console.log(r.data)
+      this.listOfPerson = r.data;
       this.loading=false
     });
   },
@@ -132,8 +127,9 @@ export default {
     },
 
     saveRoleInfo() {
+      console.log(this.info)
       editRole(this.selectedRoleId,this.info.id).then(res=>{
-        if(res.msg==="更新成功"){
+        if(res){
           this.setRoleDialogVisible = false;
            this.$router.go(0);
 

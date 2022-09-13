@@ -89,7 +89,6 @@ export const constantRoutes = [
         component: () => import('@/views/example/cglist'),
         //  name: 'ArticleList',
         meta: { title: '草稿箱', icon: 'list' },
-        
       },
       {
         path: 'create',
@@ -117,17 +116,7 @@ export const constantRoutes = [
       icon: 'lock',
       roles: ['admin', 'editor'] // you can set roles in root nav
     },
-    children: [
-
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        //   name: 'DirectivePermission',
-        meta: {
-          title: '用户权限'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
+    children: [    
       {
         path: 'role',
         component: () => import('@/views/permission/role'),

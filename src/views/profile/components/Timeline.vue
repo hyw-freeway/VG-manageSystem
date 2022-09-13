@@ -4,7 +4,7 @@
     element-loading-text="拼命加载中"
     element-loading-spinner="el-icon-loading">
     <el-timeline>
-      <el-timeline-item v-for="(item,index) of list" :key="index" :timestamp="item.publishDate" placement="top" >
+      <el-timeline-item v-for="(item,index) of list" :key="index" :timestamp="item.pub_date" placement="top" >
         <el-card :key="index" @click.native="show(index,item)">
           <h4>{{ item.title }}</h4>
           <mavon-editor
@@ -48,7 +48,7 @@ export default {
     getArticle(){
       this.loading = true
       fetchArticle(this.uid).then(response => {
-        this.list = response
+        this.list = response.data
          console.log(this.list)
         this.loading = false
       })

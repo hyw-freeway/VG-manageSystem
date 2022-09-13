@@ -33,7 +33,6 @@
           <el-button type="primary" size="small" @click="edit(scope.row)"
             >编辑</el-button
           >
-
           <el-button type="danger" size="small" @click="del(list, scope.row)"
             >删除</el-button
           >
@@ -64,12 +63,14 @@ export default {
   },
   methods: {
       edit(info){
+        console.log("111",info)
        this.$router.push({
         path: "/example/edit",
         query: { Info:info},
       });
       },
     del(_arr, info) {
+      console.log("222",info)
       this.list = this.delete(_arr, info);
       localStorage.setItem("cglist", JSON.stringify(this.list));
       location.reload;
